@@ -7,8 +7,15 @@ This file creates your application.
 """
 
 from app import app
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for,Flask,flash,jsonify
+from flask.ext.wtf import Form
+from wtforms.fields import Textfield, Filefields,SelectField
+from wrforms.validators import Required, Email
 
+class ProfileForm(Form):  
+    first_name = Textfield('Firstname', validators = [Required()])
+    last_name = Textfield('Lastname', validators = [Required()])
+    image = Textfield('Image', validators = [Required(), Email()])
 
 ###
 # Routing for your application.
@@ -18,6 +25,19 @@ from flask import render_template, request, redirect, url_for
 def home():
     """Render website's home page."""
     return render_template('home.html')
+
+@app.route('/profile/')
+def profile_add():
+    form = ProfileForm()
+    return "render_template('profile_add.html', form= form)"
+    
+@app.route('/profiles/')
+def profile_list():
+    return "list all profiles"    
+
+app.route('/profile/<int:id>/')
+def profile_view(id):
+    return "pofile()".format(id)
 
 
 @app.route('/about/')
@@ -55,4 +75,4 @@ def page_not_found(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",port="8888")
+    app.run(debug=True,host="0.0.0.0",port="8080")
