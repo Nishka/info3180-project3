@@ -9,41 +9,52 @@ This file creates your application.
 from app import app
 from flask import render_template, request, redirect, url_for,Flask,flash,jsonify
 from flask.ext.wtf import Form
-from wtforms.fields import Textfield, Filefields,SelectField
-from wrforms.validators import Required, Email
+from wtforms import TextField, FileField,SelectField
+from wtforms.validators import Required, Email
 
 class ProfileForm(Form):  
-    first_name = Textfield('Firstname', validators = [Required()])
-    last_name = Textfield('Lastname', validators = [Required()])
-    image = Textfield('Image', validators = [Required(), Email()])
+    first_name = TextField('Firstname', validators = [Required()])
+    last_name = TextField('Lastname', validators = [Required()])
+    image = TextField('Image', validators = [Required(), Email()])
 
 ###
 # Routing for your application.
 ###
 
-@app.route('/')
+@app.route('/signup/')
 def home():
-    """Render website's home page."""
-    return render_template('home.html')
+    """Render website's signup page."""
+    return render_template("signup.html", error=error)
 
-@app.route('/profile/')
-def profile_add():
-    form = ProfileForm()
-    return "render_template('profile_add.html', form= form)"
+@app.route('/api/thumbnail/process', methods=['GET'])
+def process_thumbnail():
+    pass
+
+@app.route('/api/user/register', methods =['GET', 'POST'])
+def user_register():
+    pass
+
+@app.route('/api/user/login',methods = ['GET', 'POST'])
+def user_login():
+    pass
+
+@app.route('/api/user/:id/wishlist', methods = ['GET','POST'])
+def user_wishlist(id):
+    pass
+
+
+# @app.route('//')
+# def profile_add(form=form):
+#     form = ProfileForm()
+#     return render_template('profile_add.html', form= form)
     
-@app.route('/profiles/')
-def profile_list():
-    return "list all profiles"    
+# @app.route('/profiles/')
+# def profile_list():
+#     return "list all profiles"    
 
-app.route('/profile/<int:id>/')
-def profile_view(id):
-    return "pofile()".format(id)
-
-
-@app.route('/about/')
-def about():
-    """Render the website's about page."""
-    return render_template('about.html')
+# app.route('/profile/<int:id>/')
+# def profile_view(id):
+#     return "pofile()".format(id)
 
 
 ###
@@ -64,7 +75,7 @@ def add_header(response):
     and also to cache the rendered page for 10 minutes.
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
-    response.headers['Cache-Control'] = 'public, max-age=600'
+  #  response.headers['Cache-Control'] = 'public, max-age=600'
     return response
 
 
